@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.venv/
+resultados*.csv
+sementes_ocultas*.txt
+.env
+*.jsonl
