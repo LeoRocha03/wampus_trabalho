@@ -10,5 +10,4 @@ REGISTRO = {
     "A": "agentes.agente_reativo:AgenteReativo",
     "B": "agentes.agente_logico:AgenteLogico",
     "C": "agentes.agente_objetivo:AgenteObjetivo",
-    "D": "agentes.agente_llm:AgenteLLM",     # bônus (precisa de chave de API)
 }

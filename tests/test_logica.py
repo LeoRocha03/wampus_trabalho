@@ -198,32 +198,3 @@ class TestAgentes(unittest.TestCase):
 if __name__ == "__main__":
     unittest.main()
 
-
-class TestAgenteLLMComLLMFalso(unittest.TestCase):
-    """Testa a 'encanação' do Agente D sem gastar API: um LLM falso responde."""
-
-    def test_metricas_de_movimento_inseguro_e_alucinacao(self):
-        import json
-        from agentes import agente_llm
-
-        def llm_temerario(sistema, usuario, modelo):
-            # sempre afirma que (3,1) é segura e anda para leste
-            return json.dumps({"raciocinio": "confio", "casas_seguras": [[3, 1]],
-                               "casas_perigosas": [], "acao": "MOVER",
-                               "destino": [2, 1] if "(1, 1), virado" in usuario else [3, 1]}), 100, 20
-
-        class DFalso(agente_llm.AgenteLLM):
-            cliente = staticmethod(llm_temerario)
-
-        # mundo clássico: (2,1) tem brisa e (3,1) tem poço
-        r = rodar_episodio(DFalso, mundo=MundoWumpus.classico())
-        self.assertEqual(r.desfecho, "caiu_no_poco")
-        # não dá para medir o agente depois do episódio via rodar_episodio; refaz à mão
-        d = DFalso()
-        m = MundoWumpus.classico()
-        p = m.percepcao()
-        while not m.terminado:
-            p = m.executar(d.agir(p))
-        self.assertEqual(d.movimentos_inseguros, 1)   # entrar em (3,1) sem prova
-        self.assertGreaterEqual(d.alucinacoes, 0)
-        self.assertEqual(d.tokens_entrada, 100 * d.chamadas)

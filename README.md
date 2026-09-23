@@ -137,19 +137,3 @@ Resultado nas 200 sementes públicas:
 | B · Lógico | +288,3 ± 454,9 | 30,0% | 0,0% | 11,7 |
 | C · Lógico + BFS | +358,5 ± 530,1 | 40,0% | 2,5% | 14,5 |
 
-### Bônus · Agente D (LLM)
-
-`agentes/agente_llm.py` manda as percepções em texto para um LLM, que devolve em JSON a ação e as casas que ele afirma serem seguras ou perigosas. Uma BC sombra, igual à do Agente B, recebe as mesmas percepções e serve só de juiz: conta os movimentos para casas que a lógica não prova seguras, as afirmações que a BC prova falsas (alucinações) e o custo em tokens e tempo.
-
-Funciona com Grok (xAI), Qwen (Alibaba Cloud) ou Claude (Anthropic). Crie um arquivo `.env` na raiz (ele fica fora do Git) com **uma** destas linhas:
-
-```
-XAI_API_KEY=...
-DASHSCOPE_API_KEY=...
-ANTHROPIC_API_KEY=...
-```
-
-```bash
-python experimento_llm.py -n 30 --log chamadas.jsonl   # D × B nas sementes 0..29
-python jogar.py --agente D --semente 3                  # assistir passo a passo
-```
